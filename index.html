@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Khám phá Phố cổ Hội An</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
+      background: #f2f6f8;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #d2691e;
+      text-decoration: none;
+    }
+    .nav-links a {
+      margin-left: 20px;
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    .nav-links a:hover {
+      color: #d2691e;
+    }
+
+    /* Section titles */
+    h1.section-title {
+      font-size: 2.2rem;
+      text-align: center;
+      color: #d2691e;
+      margin: 60px 0 20px;
+    }
+    p.section-sub {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      text-align: center;
+      color: #555;
+      font-size: 1rem;
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      padding-bottom: 40px;
+    }
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #000; /* Màu nền đen khi ảnh không tải được */
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .card:hover img {
+      transform: scale(1.05);
+    }
+    .card .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      color: #fff;
+      padding: 10px;
+      font-weight: 500;
+      font-size: 1rem;
+      text-align: center;
+      backdrop-filter: blur(2px);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 8px;
+      max-width: 800px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      animation: zoom 0.3s ease;
+      position: relative;
+    }
+    @keyframes zoom {
+      from { transform: scale(0.8); }
+      to { transform: scale(1); }
+    }
+    .modal-img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+    }
+    .modal-body {
+      padding: 25px;
+    }
+    .modal-body h2 {
+      color: #d2691e;
+      margin-bottom: 10px;
+    }
+    .modal-body p {
+      color: #444;
+      line-height: 1.8;
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.8rem;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      z-index: 10;
+    }
+
+    @media (max-width: 600px) {
+      .modal-img { height: 220px; }
+      h1.section-title { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#top" class="logo">Hội An</a>
+        <div class="nav-links">
+          <a href="#scenery">Cảnh đẹp</a>
+          <a href="#cuisine">Ẩm thực</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section id="top" style="background: url('https://wallpaperaccess.com/full/9350680.jpg') center/cover no-repeat; height: 55vh; display: flex; align-items: center; justify-content: center; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6)">
+    <h1 style="font-size: 3rem; text-align: center">Khám phá Phố cổ Hội An</h1>
+  </section>
+
+  <section id="scenery" class="container">
+    <h1 class="section-title">Cảnh đẹp</h1>
+    <p class="section-sub">Những địa danh không thể bỏ qua khi ghé thăm phố cổ Hội An.</p>
+    <div class="gallery" id="scenery-gallery"></div>
+  </section>
+
+  <section id="cuisine" class="container">
+    <h1 class="section-title">Ẩm thực</h1>
+    <p class="section-sub">Thưởng thức tinh hoa ẩm thực phố cổ Hội An qua những món ăn trứ danh.</p>
+    <div class="gallery" id="food-gallery"></div>
+  </section>
+
+  <div class="modal" id="modal">
+    <span class="close-btn" id="modal-close">×</span>
+    <div class="modal-content">
+      <img src="" alt="" class="modal-img" id="modal-img" />
+      <div class="modal-body">
+        <h2 id="modal-title"></h2>
+        <p id="modal-desc"></p>
+      </div>
+    </div>
+  </div>
+    <footer>
+    <div class="container">
+      <p>&copy; 2025 Khám phá Phố cổ Hội An. </p>
+      <p>&copy; Liên hệ : vannhattan50@gmail.com </p>
+
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Dữ liệu cảnh đẹp - Đã thay thế bằng các URL ảnh công khai, có thể truy cập được.
+    const sceneryData = [
+      {
+        title: 'Chùa Cầu',
+        desc: 'Chùa Cầu là biểu tượng của phố cổ Hội An, một công trình kiến trúc độc đáo, kết hợp hài hòa giữa phong cách Nhật Bản, Việt Nam và Trung Hoa.Chùa Cầu là một cây cầu cổ trong khu phố cổ Hội An, tỉnh Quảng Nam, Việt Nam. Cầu còn có tên gọi Cầu Nhật Bản hay Lai Viễn Kiều. Chiếc cầu này được các thương nhân người Nhật Bản góp tiền xây dựng vào khoảng thế kỷ 17, nên đôi khi người ta còn gọi là cầu Nhật Bản. Theo truyền thuyết, ngôi chùa được coi như là một thanh kiếm đâm xuống lưng con quái vật Namazu, khiến nó không quẫy đuôi, gây ra những trận động đất.Sau đó, người ta dựng thêm phần chùa, nối liền vào lan can phía Bắc, nhô ra giữa cầu, từ đó người địa phương gọi là Chùa Cầu.',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/c/c1/Cau_Nhat_Ban.jpg'
+      },
+      {
+        title: 'Phố đèn lồng Hội An',
+        desc: 'Khi màn đêm buông xuống, phố cổ Hội An rực rỡ trong ánh đèn lồng đa sắc, tạo nên một không gian lãng mạn và huyền ảo.',
+        img: 'https://mia.vn/media/uploads/blog-du-lich/Pho-den-long-Hoi-An-Chiem-nguong-ve-dep-lung-linh-day-lang-man-01-1618322258.jpg' 
+      },
+      {
+        title: 'Sông Hoài Hội An',
+        desc: 'Nếu mọi du khách thường ấn tượng với vẻ đẹp hoài cổ với những công trình kiến trúc đậm chất Á Đông xưa thì Sông Hoài chỉ lặng lẽ nằm bên cạnh, len lỏi và tô đậm thêm những nét đẹp đó. Tuy chỉ bình yên như vậy nhưng nếu ai đã đến Hội An chắc chắn đều phải trầm trồ vì vẻ đẹp dịu dàng và êm đềm của nó, nhẹ nhàng nhưng không hề nhạt nhòa.',
+        img: 'https://motcuocsong.vn/wp-content/uploads/2024/12/song-hoai-1.webp'
+      },
+      {
+        title: 'Biển An Bàng thơ mộng',
+        desc: 'Bãi biển An Bàng nằm gần phố cổ, lý tưởng cho một buổi chiều thư giãn, tắm nắng hoặc ngắm hoàng hôn tuyệt đẹp trên biển.Hội An không chỉ xinh đẹp với phố cổ cổ kính mà còn bởi những bãi biển trong xanh cùng bờ cát trắng trải dài. Nổi tiếng nhất trong số đó chính là biển An Bàng. Biển An Bàng tọa lạc tại xã Cẩm An, huyện Hội An, cách trung tâm thành phố Hội An khoảng 5km về phía Đông Nam; là một trong những điểm du lịch nổi tiếng tại thành phố Hội An. Với bờ cát trắng dài hơn 4km cùng với làn nước biển trong xanh, biển An Bàng đã trở thành một trong những địa điểm vui chơi rất được du khách và người dân địa phương ưa chuộng và thường xuyên ghé thăm. Theo thời gian, các nhà hàng, quán ăn và khách sạn quanh đây cũng xuất hiện nhiều hơn và tất cả đã đem lại sự đông vui, tấp nập mỗi khi mùa hè đến.',
+        img: 'https://ik.imagekit.io/tvlk/blog/2023/03/bien-an-bang-1.jpg?tr=q-70,c-at_max,w-500,h-300,dpr-2'
+      },
+
+      {
+        title: 'Nhà cổ Tấn Ký',
+        desc: 'Ngôi nhà cổ Tấn Ký là một ví dụ điển hình về kiến trúc nhà ở truyền thống của Hội An, giữ gìn nét văn hóa và lịch sử lâu đời.Nhà cổ Tấn Ký tọa lạc tại số 101 trên con đường Nguyễn Thái Học thuộc Phường Minh An, Thành phố Hội An. Vị trí này rất đẹp vì cùng trên con đường đó là những địa điểm văn hóa - lịch sử nổi tiếng khác, có thể kể đến như: Bảo tàng Văn hoá Dân gian Hội An, Nhà biểu diễn Nghệ thuật Cổ truyền Hội An và Bảo tàng Văn hóa Sa Huỳnh.Giờ mở cửa tham quan nhà cổ Tấn Ký (từ Thứ 2 - Chủ Nhật) vào khung giờ 08:00–11:30 và 13:30–17:45. Giá vé tham quan nhà cổ Tấn Ký: 35.000 VNĐ/người/lượt (cho người lớn)Miễn phí tham quan cho trẻ em dưới 10 tuổi. Lưu ý: Với mỗi lượt vé, thời gian tham quan nhà cổ Tấn Ký là 20 phút. Đặc biệt, nếu bạn đi theo một nhóm từ 8 người trở lên sẽ được hưởng ưu đãi là thuyết minh miễn phí xuyên suốt quá trình tham quan.',
+        img: 'https://mia.vn/media/uploads/blog-du-lich/Nha-co-tan-ky-hoi-an-an-tuong-nha-co-hon-200-nam-tuoi-01-1617415912.jpg'
+      }
+ 
+    ];
+
+
+    const foodData = [
+      {
+        title: 'Cao lầu ',
+        desc: 'Cao lầu là một món mì ở Đà Nẵng, Việt Nam. Đây được xem là món ăn đặc sản của Hội An. Món mì này có sợi mì màu vàng, được dùng với tôm, thịt xíu (xá xíu), các loại rau sống và rất ít nước dùng. Sợi mì màu vàng là do bột được hòa chung với tro từ một loại cây ở địa phương.Sợi mì đặc biệt từ bột gạo trộn tro, ăn kèm với thịt xíu, tôm, rau sống Trà Quế và nước dùng đậm đà, tạo nên hương vị khó quên. ',
+        img: 'https://static.vinwonders.com/production/cao-lau-hoi-an.jpg' 
+      },
+
+      {
+        title: 'Bánh mì Hội An',
+        desc: 'Bánh mì Hội An là một trong những món ăn đường phố nổi tiếng và được yêu thích nhất tại Việt Nam, thậm chí còn được nhiều du khách và chuyên gia ẩm thực quốc tế ca ngợi là "bánh mì ngon nhất thế giới". Món ăn này không chỉ là một bữa ăn nhanh tiện lợi mà còn là một phần không thể thiếu trong trải nghiệm ẩm thực khi đến với phố cổ Hội An.',
+        img: 'https://static.vinwonders.com/2022/10/banh-mi-hoi-an-03.jpg'
+      },
+      {
+        title: 'Cơm gà Hội An',
+        desc: 'Cơm gà Hội An là một trong những món ăn đặc sản nổi tiếng, làm say lòng bao du khách khi đến với phố cổ. Món ăn này không chỉ là sự kết hợp đơn giản giữa cơm và gà mà còn ẩn chứa những bí quyết riêng, tạo nên hương vị độc đáo không thể tìm thấy ở bất cứ nơi nào khác.Hạt cơm vàng óng được nấu từ nước luộc gà, ăn kèm với thịt gà xé trộn, rau răm, hành tây và chén nước dùng nóng hổi.Cơm gà Hội An không chỉ là một bữa ăn, mà còn là một phần trải nghiệm văn hóa ẩm thực độc đáo của phố cổ. Hương vị đậm đà, sự kết hợp hài hòa giữa các nguyên liệu tươi ngon đã làm nên sức hấp dẫn khó cưỡng của món ăn này.',
+        img: 'https://statics.vinwonders.com/com-ga-hoi-an-8_1632817562.png'
+      },
+      {
+        title: 'Nước Mót Hội An',
+        desc: 'Mót là thức uống được làm nên từ rất nhiều loại thảo mộc như hoa cúc, la hán quả, lá trà xanh, quế, hạ khô thảo, cam thảo, kim ngân hoa, chanh, đường, mật ong, lá sen khô, thanh quế và sả. Tất cả được pha chế một cách tỉ mỉ để mang lại vị ngọt mát, hương thơm phảng phất, dư âm ngọt ngào, giúp người uống cân bằng âm dương, ăn ngon miệng, ngủ ngon giấc. ',
+        img: 'https://culaochamtourist.vn/wp-content/uploads/2022/07/cach-lam-nuoc-mot-hoi-an-2.png'
+      },
+
+      {
+        title: 'Mì Quảng',
+        desc: 'Mì Quảng là một loại sợi mì, thường được làm từ bột gạo xay mịn với nước từ hạt dành dành và trứng cho có màu vàng và tráng thành từng lớp bánh mỏng, sau đó thái theo chiều ngang để có những sợi mì mỏng khoảng 5 -10mm. Khi thực hiện món ăn, dưới lớp mì là các loại rau sống, mì Quảng phải ăn kèm với rau sống 9 vị thì mới tạo nên được hương vị nồng nàn: húng quế, xà lách tươi, cải non mới nụ, giá trắng có thể được trụng chín hoặc để sống, ngò rí, rau răm với hành hoa thái nhỏ và thêm hoa chuối cắt mỏng. Trên mì là thịt lợn, tôm, thịt gà, thịt cá lóc (đôi khi có trứng luộc) cùng với nước dùng được hầm từ xương heo. Người ta còn bỏ thêm hành lá thái nhỏ, rau thơm, ớt đỏ... Thông thường nước dùng được gọi là nước nhân, đây cũng là một loại nước lèo nhưng rất cô đặc và ít nước. Ngoài ra mì còn được dùng kèm với bánh tráng mè, thêm cả đậu phộng rang giòn thơm tạo nên hương vị đặc trưng.',
+        img: 'https://cdn.xanhsm.com/2025/02/b503aed4-mi-quang-hoi-an-1.jpg'
+      }
+    ];
+
+    // Tạo card
+    function createCard(item) {
+      const card = document.createElement('div');
+      card.className = 'card';
+  
+      card.innerHTML = `<img src="${item.img}" alt="${item.title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/250x180?text=Image+Not+Found';"><span class="caption">${item.title}</span>`;
+      card.addEventListener('click', () => openModal(item));
+      return card;
+    }
+
+
+    const sceneryGallery = document.getElementById('scenery-gallery');
+    const foodGallery = document.getElementById('food-gallery');
+
+
+    sceneryGallery.innerHTML = '';
+    foodGallery.innerHTML = '';
+
+    sceneryData.forEach(item => sceneryGallery.appendChild(createCard(item)));
+    foodData.forEach(item => foodGallery.appendChild(createCard(item)));
+
+    // Modal
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalClose = document.getElementById('modal-close');
+
+    function openModal(item) {
+      modalImg.src = item.img;
+      modalTitle.textContent = item.title;
+      modalDesc.textContent = item.desc;
+      modal.classList.add('active');
+    }
+
+    modalClose.addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+
+ 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>
